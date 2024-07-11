@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  php-apache:
+    image: php:8.3-apache
+    ports:
+      - "8081:80"
+    volumes:
+      - ./php:/var/www/html
+    networks:
+      - app_net
+
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: my_database
+      MYSQL_USER: us
+      MYSQL_PASSWORD: pas
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app_net
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8082:8080
+    networks:
+      - app_net
+
+networks:
+  app_net:
+
+volumes:
+  mysql_data:
+    driver: local
